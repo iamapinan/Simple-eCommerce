@@ -1,18 +1,27 @@
 var express = require('express')
+var constant = require('../configs/constants')
+var jwt = require("jwt-simple");
 
-const login = (req, res, next) => {
-     res.json({message: 'success'})
+const profile = {
+     username: "testuser",
+     email: "user@test.com",
+     firstName: "John",
+     lastName: "Doe",
+     sex: "male",
+     role: "admin"
+}
+
+const login = (req, res) => {
+     const payload = {
+          sub: req.body.email,
+          iat: new Date().getTime()
+       }
+     const secret = constant.secretKey
+
+     res.send(jwt.encode(payload, secret));
 }
 
 const getUser = (req, res) => {
-     let response = {
-          username: "testuser",
-          email: "user@test.com",
-          firstName: "John",
-          lastName: "Doe",
-          sex: "male",
-          role: "admin"
-     }
      res.json(response);
 };
 
